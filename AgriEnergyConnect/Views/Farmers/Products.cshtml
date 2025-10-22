@@ -1,0 +1,51 @@
+﻿@model AgriEnergyConnect.Models.Farmer
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">
+                <i class="bi bi-box-seam"></i> Products supplied by @Model.Name
+            </h5>
+        </div>
+
+        <div class="card-body">
+            @if (Model.Products != null && Model.Products.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-success">
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Production Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.Products)
+                            {
+                                <tr>
+                                    <td>@product.Name</td>
+                                    <td>@product.Category</td>
+                                    <td>@product.ProductionDate.ToShortDateString()</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center text-muted py-4">
+                    <i class="bi bi-emoji-frown fs-3"></i>
+                    <p>No products found for this farmer.</p>
+                </div>
+            }
+
+            <div class="d-flex justify-content-end">
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to Farmers
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

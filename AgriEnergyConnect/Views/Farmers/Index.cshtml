@@ -1,0 +1,67 @@
+﻿@model IEnumerable<AgriEnergyConnect.Models.Farmer>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">
+            <i class="bi bi-people-fill"></i> Farmers
+        </h2>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add Farmer
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-success">
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Location</th>
+                                <th class="text-center" style="width: 260px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var f in Model)
+                            {
+                                <tr>
+                                    <td>@f.Name</td>
+                                    <td>@f.Email</td>
+                                    <td>@f.Location</td>
+                                    <td class="text-center">
+                                        <a asp-action="Details" asp-route-id="@f.Id"
+                                           class="btn btn-secondary btn-sm me-1">
+                                            <i class="bi bi-eye"></i> View
+                                        </a>
+                                        <a asp-action="Products" asp-route-id="@f.Id"
+                                           class="btn btn-success btn-sm me-1">
+                                            <i class="bi bi-box-seam"></i> Products
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@f.Id"
+                                           class="btn btn-info btn-sm me-1 text-white">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </a>
+                                        <button class="btn btn-danger btn-sm"
+                                                onclick="confirmAction('Delete this farmer?', () => window.location.href='@Url.Action("Delete", new { id = f.Id })')">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center text-muted py-4">
+                    <i class="bi bi-emoji-frown fs-3"></i>
+                    <p class="mt-2">No farmers available at the moment.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

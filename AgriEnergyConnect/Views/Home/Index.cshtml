@@ -1,0 +1,114 @@
+﻿@using AgriEnergyConnect.Data
+@inject ApplicationDbContext _context
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var farmerCount = _context.Farmers.Count();
+    var productCount = _context.Products.Count();
+    var recentFarmers = _context.Farmers
+        .OrderByDescending(f => f.Id)
+        .Take(3)
+        .ToList();
+    var recentProducts = _context.Products
+        .OrderByDescending(p => p.Id)
+        .Take(3)
+        .ToList();
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-dark">AgriEnergy Connect Dashboard</h1>
+        <p class="text-muted">Empowering Sustainable Growth Through Agriculture & Technology</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0 rounded-4 h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-people-fill fs-1 text-success"></i>
+                    <h5 class="fw-bold mt-3">Registered Farmers</h5>
+                    <h2 class="display-6 fw-bolder text-dark">@farmerCount</h2>
+                    <a asp-controller="Farmers" asp-action="Index" class="btn btn-outline-success btn-sm mt-3">View Farmers</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0 rounded-4 h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-box-seam fs-1 text-primary"></i>
+                    <h5 class="fw-bold mt-3">Products Listed</h5>
+                    <h2 class="display-6 fw-bolder text-dark">@productCount</h2>
+                    <a asp-controller="Products" asp-action="Index" class="btn btn-outline-primary btn-sm mt-3">View Products</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0 rounded-4 h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-lightning-charge-fill fs-1 text-warning"></i>
+                    <h5 class="fw-bold mt-3">System Overview</h5>
+                    <p class="text-muted small">Efficiently connecting farmers with renewable energy opportunities and product visibility.</p>
+                    <a asp-controller="Home" asp-action="Privacy" class="btn btn-outline-warning btn-sm mt-2">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-success text-white">
+                    <i class="bi bi-person-lines-fill"></i> Recent Farmers
+                </div>
+                <div class="card-body">
+                    @if (recentFarmers.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var f in recentFarmers)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>@f.Name</span>
+                                    <small class="text-muted">@f.Location</small>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No farmers registered yet.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-primary text-white">
+                    <i class="bi bi-box"></i> Recent Products
+                </div>
+                <div class="card-body">
+                    @if (recentProducts.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var p in recentProducts)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>@p.Name</span>
+                                    <small class="text-muted">@p.Category</small>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No products listed yet.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
